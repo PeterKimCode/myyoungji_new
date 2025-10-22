@@ -601,6 +601,23 @@ async function initPage() {
   const currentPath = body.dataset.currentPath || "/";
   const base = getBase(depth);
 
+  const applyFavicon = (rel) => {
+    const head = document.head;
+    if (!head) return;
+    const faviconUrl = `${base}images/gtcc_logo.jpg`;
+    const existing = head.querySelector(`link[rel="${rel}"]`);
+    const link = existing || document.createElement("link");
+    link.rel = rel;
+    link.href = faviconUrl;
+    link.type = "image/jpeg";
+    if (!existing) {
+      head.appendChild(link);
+    }
+  };
+
+  applyFavicon("icon");
+  applyFavicon("shortcut icon");
+
   const headerPath = `${base}partials/header.html`;
   const footerPath = `${base}partials/footer.html`;
 
