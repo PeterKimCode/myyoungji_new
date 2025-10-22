@@ -84,13 +84,28 @@ function findCurrentNav(path) {
   return { section: null, page: null };
 }
 
-function highlightActiveLink(link, isActive) {
+function highlightActiveLink(link, isActive, variant = "default") {
   if (!link) return;
   if (isActive) {
-    link.classList.add("text-sky-600", "font-semibold");
+    link.classList.add("text-[#A51C30]");
     link.setAttribute("aria-current", "page");
+    if (variant === "desktop") {
+      link.classList.add("border-b-[#A51C30]", "font-semibold");
+    }
+    if (variant === "sidebar") {
+      link.classList.add(
+        "border-[#A51C30]",
+        "bg-white",
+        "font-semibold",
+        "text-[#A51C30]",
+        "shadow-sm"
+      );
+    }
+    if (variant === "mobile") {
+      link.classList.add("text-[#A51C30]");
+    }
   } else {
-    link.classList.remove("text-sky-600", "font-semibold");
+    link.classList.remove("text-[#A51C30]", "font-semibold", "border-b-[#A51C30]", "border-[#A51C30]", "bg-white", "shadow-sm");
     link.removeAttribute("aria-current");
   }
 }
@@ -109,58 +124,82 @@ function buildTopNavigation(base, currentPath, activeSection) {
     anchor.href = relative;
     anchor.textContent = item.label;
     anchor.className =
-      "block rounded-md px-3 py-2 transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500";
-    highlightActiveLink(anchor, activeSection && activeSection.path === item.path);
+      "border-b-2 border-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#1F2933] transition hover:text-[#A51C30] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
+    highlightActiveLink(anchor, activeSection && activeSection.path === item.path, "desktop");
     topNav.appendChild(anchor);
 
-    const mobileWrapper = document.createElement("div");
-    mobileWrapper.className = "py-2";
-    const mobileLink = anchor.cloneNode(true);
-    mobileWrapper.appendChild(mobileLink);
+    const group = document.createElement("div");
+    group.className = "border-b border-slate-200 pb-4 last:border-none last:pb-0";
+
+    const mobileLink = document.createElement("a");
+    mobileLink.href = relative;
+    mobileLink.textContent = item.label;
+    mobileLink.className =
+      "flex items-center justify-between py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#1A1F2B] transition hover:text-[#A51C30] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
+    highlightActiveLink(mobileLink, activeSection && activeSection.path === item.path, "mobile");
+    group.appendChild(mobileLink);
 
     if (item.children && item.children.length > 0) {
-      const childList = document.createElement("div");
-      childList.className = "ml-4 border-l border-slate-200 pl-3";
+      const childList = document.createElement("ul");
+      childList.className = "mt-2 space-y-1 border-l border-slate-200 pl-4";
       item.children.forEach((child) => {
+        const li = document.createElement("li");
         const childLink = document.createElement("a");
         childLink.href = toRelative(base, child.path);
         childLink.textContent = child.label;
         childLink.className =
-          "mt-1 block rounded-md px-2 py-1 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500";
-        highlightActiveLink(childLink, currentPath === child.path);
-        childList.appendChild(childLink);
+          "block rounded-md px-3 py-2 text-[0.8rem] font-medium uppercase tracking-[0.14em] text-[#374151] transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
+        highlightActiveLink(childLink, currentPath === child.path, "mobile");
+        li.appendChild(childLink);
+        childList.appendChild(li);
       });
-      mobileWrapper.appendChild(childList);
+      group.appendChild(childList);
     }
 
-    mobileNav.appendChild(mobileWrapper);
+    mobileNav.appendChild(group);
   });
 }
 
 function buildSidebar(base, section, currentPath) {
   const sidebar = document.getElementById("sidebar-nav");
   const sidebarContainer = document.getElementById("sidebar");
+  const sidebarMobile = document.getElementById("sidebar-nav-mobile");
+  const sidebarMobileContainer = document.getElementById("sidebar-mobile");
   if (!sidebar || !sidebarContainer) return;
 
   if (!section || !section.children || section.children.length === 0) {
     sidebarContainer.classList.add("hidden");
+    if (sidebarMobileContainer) {
+      sidebarMobileContainer.classList.add("hidden");
+    }
     return;
   }
 
   sidebarContainer.classList.remove("hidden");
   sidebar.innerHTML = "";
+  if (sidebarMobile) {
+    sidebarMobile.innerHTML = "";
+  }
+  if (sidebarMobileContainer) {
+    sidebarMobileContainer.classList.remove("hidden");
+  }
   section.children.forEach((child) => {
     const li = document.createElement("li");
     const link = document.createElement("a");
     link.href = toRelative(base, child.path);
     link.textContent = child.label;
     link.className =
-      "block rounded-md px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500";
-    if (currentPath === child.path) {
-      link.classList.add("bg-slate-100", "text-sky-700", "font-semibold");
-    }
+      "group flex items-center justify-between rounded-md border border-transparent px-4 py-3 text-[0.85rem] font-medium uppercase tracking-[0.14em] text-[#374151] transition hover:border-[#A51C30]/30 hover:text-[#A51C30] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
+    highlightActiveLink(link, currentPath === child.path, "sidebar");
     li.appendChild(link);
     sidebar.appendChild(li);
+
+    if (sidebarMobile) {
+      const mobileLi = li.cloneNode(true);
+      const mobileLink = mobileLi.querySelector("a");
+      highlightActiveLink(mobileLink, currentPath === child.path, "sidebar");
+      sidebarMobile.appendChild(mobileLi);
+    }
   });
 }
 
@@ -168,8 +207,8 @@ function buildBreadcrumbs(base, section, page) {
   const breadcrumbNav = document.getElementById("breadcrumbs");
   if (!breadcrumbNav) return;
 
-  const list = document.createElement("ul");
-  list.className = "flex flex-wrap items-center gap-2 text-sm text-slate-600";
+  const list = document.createElement("ol");
+  list.className = "flex flex-wrap items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-slate-500";
 
   const crumbs = [];
   crumbs.push({ label: "Home", path: "/" });
@@ -182,21 +221,24 @@ function buildBreadcrumbs(base, section, page) {
 
   crumbs.forEach((crumb, index) => {
     const li = document.createElement("li");
-    if (index !== crumbs.length - 1) {
+    const isLast = index === crumbs.length - 1;
+    if (isLast) {
+      const span = document.createElement("span");
+      span.textContent = crumb.label;
+      span.className = "text-[#1F2933]";
+      span.setAttribute("aria-current", "page");
+      li.appendChild(span);
+    } else {
       const link = document.createElement("a");
       link.href = toRelative(base, crumb.path);
       link.textContent = crumb.label;
-      link.className = "text-sky-600 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500";
+      link.className = "text-[#A51C30] transition hover:text-[#7F1524] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
       li.appendChild(link);
       const separator = document.createElement("span");
-      separator.textContent = ">";
-      separator.className = "mx-2 text-slate-400";
+      separator.textContent = "›";
+      separator.className = "text-slate-300";
+      separator.setAttribute("aria-hidden", "true");
       li.appendChild(separator);
-    } else {
-      const span = document.createElement("span");
-      span.textContent = crumb.label;
-      span.className = "font-semibold text-slate-700";
-      li.appendChild(span);
     }
     list.appendChild(li);
   });
@@ -210,23 +252,98 @@ function initFooterYear() {
   if (el) {
     el.textContent = new Date().getFullYear();
   }
+
+  const quickLinks = document.getElementById("footer-quick-links");
+  const baseFromBody = getBase(Number(document.body.dataset.depth || "0"));
+  if (quickLinks) {
+    quickLinks.innerHTML = "";
+    const items = [
+      { label: "About Youngji", path: "/youngji_about-us/" },
+      { label: "Admissions", path: "/admission/" },
+      { label: "Academic Programs", path: "/basic-education/" },
+      { label: "e-Education", path: "/e-education/" },
+      { label: "Community", path: "/community/" },
+    ];
+    items.forEach((item) => {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = toRelative(baseFromBody, item.path);
+      link.textContent = item.label;
+      link.className = "inline-flex items-center gap-2 text-slate-300 transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
+      const icon = document.createElement("span");
+      icon.textContent = "→";
+      icon.className = "text-[#A51C30]";
+      icon.setAttribute("aria-hidden", "true");
+      link.appendChild(icon);
+      li.appendChild(link);
+      quickLinks.appendChild(li);
+    });
+  }
+
+  const footerCta = document.getElementById("footer-cta");
+  if (footerCta) {
+    footerCta.href = toRelative(baseFromBody, "/admission/sub2/");
+  }
 }
 
 function initMobileToggle() {
   const toggle = document.getElementById("mobile-menu-toggle");
-  const mobileNav = document.getElementById("mobile-nav");
-  if (!toggle || !mobileNav) return;
+  const overlay = document.getElementById("mobile-menu-overlay");
+  const drawer = document.getElementById("mobile-menu-drawer");
+  const closeButton = document.getElementById("mobile-menu-close");
+  if (!toggle || !overlay || !drawer || !closeButton) return;
 
-  toggle.addEventListener("click", () => {
-    const isHidden = mobileNav.hasAttribute("hidden");
-    if (isHidden) {
-      mobileNav.removeAttribute("hidden");
-      toggle.setAttribute("aria-expanded", "true");
-    } else {
-      mobileNav.setAttribute("hidden", "");
-      toggle.setAttribute("aria-expanded", "false");
+  const openMenu = () => {
+    overlay.classList.remove("hidden");
+    overlay.removeAttribute("aria-hidden");
+    toggle.setAttribute("aria-expanded", "true");
+    drawer.focus();
+    document.body.classList.add("overflow-hidden");
+  };
+
+  const closeMenu = () => {
+    overlay.classList.add("hidden");
+    overlay.setAttribute("aria-hidden", "true");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("overflow-hidden");
+    toggle.focus();
+  };
+
+  toggle.addEventListener("click", openMenu);
+  closeButton.addEventListener("click", closeMenu);
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLElement && event.target.dataset.drawerClose === "true") {
+      closeMenu();
     }
   });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay && !overlay.classList.contains("hidden")) {
+      closeMenu();
+    }
+  });
+}
+
+function buildGlobalCta(base) {
+  const container = document.getElementById("global-cta");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="rounded-3xl border border-[#A51C30]/20 bg-[#A51C30] px-6 py-10 text-white shadow-lg">
+      <div class="mx-auto flex max-w-4xl flex-col items-start gap-6 text-left md:flex-row md:items-center md:justify-between">
+        <div class="space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-white/80">Take the next step</p>
+          <h2 class="text-3xl font-semibold tracking-tight text-white md:text-4xl">Begin your Youngji journey today</h2>
+          <p class="max-w-xl text-base text-white/90">Connect with our admissions counselors to explore scholarships, application timelines, and personalized campus visits for your family.</p>
+        </div>
+        <div class="flex flex-col items-stretch gap-3 sm:flex-row">
+          <a href="${toRelative(base, "/admission/sub2/")}" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#A51C30] transition hover:bg-[#FDE8EB] focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Application Guide</a>
+          <a href="${toRelative(base, "/community/campus-life/")}" class="inline-flex items-center justify-center rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Contact Admissions</a>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 const STUDENT_RECORDS = [
@@ -319,10 +436,16 @@ async function initPage() {
     logoLink.href = toRelative(base, "/");
   }
 
+  const headerShortcut = document.getElementById("header-cta-shortcut");
+  if (headerShortcut) {
+    headerShortcut.href = toRelative(base, "/admission/");
+  }
+
   const { section, page } = findCurrentNav(currentPath);
   buildTopNavigation(base, currentPath, section);
   buildSidebar(base, section, currentPath);
   buildBreadcrumbs(base, section, page);
+  buildGlobalCta(base);
   initFooterYear();
   initMobileToggle();
 
