@@ -347,11 +347,56 @@ function buildGlobalCta(base) {
 }
 
 const STUDENT_RECORDS = [
-  { name: "Hana Kim", grade: "Grade 5", studentId: "YJ-1052" },
-  { name: "Jinwoo Park", grade: "Grade 8", studentId: "YJ-2084" },
-  { name: "Soyeon Choi", grade: "Grade 10", studentId: "YJ-3107" },
-  { name: "Minho Lee", grade: "Grade 12", studentId: "YJ-4120" },
-  { name: "Eunji Han", grade: "Grade 7", studentId: "YJ-2073" },
+  {
+    studentNumber: "2024-001",
+    studentName: "Hana Kim",
+    enrolledCourse: "STEM",
+    gender: "Female",
+    lrn: "LRN-9051-3321",
+    curriculum: "K-12",
+    enrolledMonth: "August 2024",
+    status: "Enrolled",
+  },
+  {
+    studentNumber: "2024-014",
+    studentName: "Jinwoo Park",
+    enrolledCourse: "Humanities",
+    gender: "Male",
+    lrn: "LRN-9051-3378",
+    curriculum: "K-12",
+    enrolledMonth: "August 2024",
+    status: "Enrolled",
+  },
+  {
+    studentNumber: "2024-027",
+    studentName: "Soyeon Choi",
+    enrolledCourse: "IB Diploma",
+    gender: "Female",
+    lrn: "LRN-9051-3412",
+    curriculum: "IB",
+    enrolledMonth: "July 2024",
+    status: "Pending",
+  },
+  {
+    studentNumber: "2024-033",
+    studentName: "Minho Lee",
+    enrolledCourse: "Arts & Design",
+    gender: "Male",
+    lrn: "LRN-9051-3435",
+    curriculum: "K-12",
+    enrolledMonth: "June 2024",
+    status: "Enrolled",
+  },
+  {
+    studentNumber: "2024-042",
+    studentName: "Eunji Han",
+    enrolledCourse: "STEM",
+    gender: "Female",
+    lrn: "LRN-9051-3490",
+    curriculum: "K-12",
+    enrolledMonth: "May 2024",
+    status: "Withdrawn",
+  },
 ];
 
 function initStudentSearch() {
@@ -366,7 +411,7 @@ function initStudentSearch() {
     if (records.length === 0) {
       const row = document.createElement("tr");
       const cell = document.createElement("td");
-      cell.colSpan = 3;
+      cell.colSpan = 8;
       cell.textContent = "No matching students found.";
       cell.className = "px-4 py-3 text-center text-sm text-slate-500";
       row.appendChild(cell);
@@ -376,7 +421,16 @@ function initStudentSearch() {
 
     records.forEach((record) => {
       const row = document.createElement("tr");
-      [record.name, record.grade, record.studentId].forEach((value) => {
+      [
+        record.studentNumber,
+        record.studentName,
+        record.enrolledCourse,
+        record.gender,
+        record.lrn,
+        record.curriculum,
+        record.enrolledMonth,
+        record.status,
+      ].forEach((value) => {
         const cell = document.createElement("td");
         cell.textContent = value;
         cell.className = "px-4 py-3 text-sm text-slate-700";
@@ -388,19 +442,20 @@ function initStudentSearch() {
 
   const filterRecords = () => {
     const query = searchInput.value.trim().toLowerCase();
-    const filtered = STUDENT_RECORDS.filter((record) => {
-      return (
-        record.name.toLowerCase().includes(query) ||
-        record.grade.toLowerCase().includes(query) ||
-        record.studentId.toLowerCase().includes(query)
-      );
-    });
+    if (query === "") {
+      resultBody.innerHTML = "";
+      resultCount.textContent = "0 results";
+      return;
+    }
+
+    const filtered = STUDENT_RECORDS.filter((record) =>
+      record.studentNumber.toLowerCase().includes(query),
+    );
     resultCount.textContent = `${filtered.length} result${filtered.length === 1 ? "" : "s"}`;
     renderRows(filtered);
   };
 
   searchInput.addEventListener("input", filterRecords);
-  filterRecords();
 }
 
 async function initPage() {
