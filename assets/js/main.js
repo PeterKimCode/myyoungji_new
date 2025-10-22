@@ -645,6 +645,11 @@ async function initPage() {
     logoLink.href = toRelative(base, "/");
   }
 
+  const logoImage = logoLink ? logoLink.querySelector("img") : null;
+  if (logoImage) {
+    logoImage.src = toRelative(base, "/images/gtcc_logo.jpg");
+  }
+
   const headerShortcut = document.getElementById("header-cta-shortcut");
   if (headerShortcut) {
     headerShortcut.href = toRelative(base, "/admission/");
