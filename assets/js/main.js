@@ -338,8 +338,8 @@ function buildGlobalCta(base) {
           <p class="max-w-xl text-base text-white/90">Connect with our admissions counselors to explore scholarships, application timelines, and personalized campus visits for your family.</p>
         </div>
         <div class="flex flex-col items-stretch gap-3 sm:flex-row">
-          <a href="${toRelative(base, "/admission/sub2/")}" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#A51C30] transition hover:bg-[#FDE8EB] focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Application Guide</a>
-          <a href="${toRelative(base, "/community/campus-life/")}" class="inline-flex items-center justify-center rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Contact Admissions</a>
+          <a href="${toRelative(base, "/admission/sub2/")}" class="inline-flex items-center justify-center rounded-full border border-white/30 bg-[#A51C30] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-sm transition hover:bg-[#8F1727] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white">Application Guide</a>
+          <a href="${toRelative(base, "/community/campus-life/")}" class="inline-flex items-center justify-center rounded-full border border-white/30 bg-[#A51C30] px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-sm transition hover:bg-[#8F1727] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white">Contact Admissions</a>
         </div>
       </div>
     </div>
