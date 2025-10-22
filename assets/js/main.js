@@ -247,6 +247,143 @@ function buildBreadcrumbs(base, section, page) {
   breadcrumbNav.appendChild(list);
 }
 
+function initHeroSlider() {
+  const slider = document.getElementById("hero-slider");
+  if (!slider) return;
+
+  const slides = Array.from(slider.querySelectorAll("[data-hero-slide]"));
+  if (slides.length <= 1) return;
+
+  let currentIndex = slides.findIndex((slide) => slide.dataset.active === "true");
+  if (currentIndex < 0) {
+    currentIndex = 0;
+  }
+
+  const prevButton = slider.querySelector("[data-hero-prev]");
+  const nextButton = slider.querySelector("[data-hero-next]");
+  const indicatorsContainer = slider.querySelector("[data-hero-indicators]");
+  const statusEl = slider.querySelector("[data-hero-status]");
+
+  let autoTimer;
+  let indicators = [];
+
+  function setSlideVisibility() {
+    slides.forEach((slide, index) => {
+      const isActive = index === currentIndex;
+      slide.classList.toggle("opacity-100", isActive);
+      slide.classList.toggle("opacity-0", !isActive);
+      slide.classList.toggle("z-10", isActive);
+      slide.dataset.active = isActive ? "true" : "false";
+      slide.setAttribute("aria-hidden", isActive ? "false" : "true");
+    });
+
+    indicators.forEach((indicator, index) => {
+      const isActive = index === currentIndex;
+      if (isActive) {
+        indicator.classList.add("bg-white", "opacity-100");
+        indicator.classList.remove("bg-white/40", "opacity-70");
+        indicator.setAttribute("aria-current", "true");
+      } else {
+        indicator.classList.remove("bg-white", "opacity-100");
+        indicator.classList.add("bg-white/40", "opacity-70");
+        indicator.removeAttribute("aria-current");
+      }
+    });
+
+    if (statusEl) {
+      statusEl.textContent = `Slide ${currentIndex + 1} of ${slides.length}`;
+    }
+  }
+
+  function goToSlide(index) {
+    const total = slides.length;
+    currentIndex = ((index % total) + total) % total;
+    setSlideVisibility();
+  }
+
+  function showNextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function showPreviousSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  const AUTO_INTERVAL = 7000;
+
+  function stopAutoPlay() {
+    if (autoTimer) {
+      window.clearInterval(autoTimer);
+      autoTimer = undefined;
+    }
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoTimer = window.setInterval(showNextSlide, AUTO_INTERVAL);
+  }
+
+  function restartAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  if (indicatorsContainer) {
+    indicatorsContainer.innerHTML = "";
+    indicators = slides.map((_, index) => {
+      const indicator = document.createElement("button");
+      indicator.type = "button";
+      indicator.className =
+        "h-2.5 w-2.5 rounded-full bg-white/40 opacity-70 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
+      indicator.setAttribute("aria-label", `Show slide ${index + 1} of ${slides.length}`);
+      indicator.addEventListener("click", () => {
+        goToSlide(index);
+        restartAutoPlay();
+      });
+      indicatorsContainer.appendChild(indicator);
+      return indicator;
+    });
+  }
+
+  if (prevButton) {
+    prevButton.addEventListener("click", () => {
+      showPreviousSlide();
+      restartAutoPlay();
+    });
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener("click", () => {
+      showNextSlide();
+      restartAutoPlay();
+    });
+  }
+
+  slider.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      showPreviousSlide();
+      restartAutoPlay();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      showNextSlide();
+      restartAutoPlay();
+    }
+  });
+
+  slider.addEventListener("mouseenter", stopAutoPlay);
+  slider.addEventListener("mouseleave", startAutoPlay);
+  slider.addEventListener("focusin", stopAutoPlay);
+  slider.addEventListener("focusout", (event) => {
+    if (!slider.contains(event.relatedTarget)) {
+      startAutoPlay();
+    }
+  });
+
+  setSlideVisibility();
+  startAutoPlay();
+}
+
 function initFooterYear() {
   const el = document.getElementById("footer-year");
   if (el) {
@@ -503,6 +640,7 @@ async function initPage() {
   buildGlobalCta(base);
   initFooterYear();
   initMobileToggle();
+  initHeroSlider();
 
   if (currentPath === "/community/search-for-student/") {
     initStudentSearch();

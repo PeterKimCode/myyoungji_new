@@ -20,9 +20,79 @@
         <h1 class="mt-4 font-['Source_Serif_Pro',_serif] text-4xl font-semibold tracking-tight text-[#111418] sm:text-5xl lg:text-6xl">Empowering Scholars with Purpose</h1>
         <p class="mt-6 text-lg leading-relaxed text-[#1F2933]/80 md:text-xl">Experience a Harvard-inspired campus culture where rigorous academics meet compassionate mentorship for learners from preschool to pre-college.</p>
       </div>
-      <figure class="mt-10 hidden overflow-hidden rounded-2xl shadow-lg md:mt-0 md:block md:h-full md:w-1/2">
-        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80" alt="Students collaborating in a modern school space" class="h-full w-full object-cover" loading="lazy" />
-      </figure>
+      <div class="mt-10 hidden md:mt-0 md:block md:h-full md:w-1/2">
+        <div
+          id="hero-slider"
+          class="relative h-full w-full min-h-[320px] overflow-hidden rounded-2xl shadow-lg"
+          aria-roledescription="carousel"
+          aria-label="Youngji campus life highlights"
+          tabindex="0"
+        >
+          <span class="sr-only" data-hero-status>Slide 1 of 5</span>
+          <button
+            type="button"
+            class="group absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[#1F2933] shadow transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]"
+            data-hero-prev
+            aria-label="Previous slide"
+          >
+            <span aria-hidden="true" class="block text-lg leading-none">‹</span>
+          </button>
+          <button
+            type="button"
+            class="group absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[#1F2933] shadow transition hover:bg-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]"
+            data-hero-next
+            aria-label="Next slide"
+          >
+            <span aria-hidden="true" class="block text-lg leading-none">›</span>
+          </button>
+          <div class="absolute inset-x-0 bottom-4 z-20 flex items-center justify-center gap-2" data-hero-indicators></div>
+          <img
+            src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80"
+            alt="Students walking through a bright school corridor"
+            class="absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-700 ease-in-out"
+            data-hero-slide
+            data-active="true"
+            loading="eager"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1544776193-352d25ca81f8?auto=format&fit=crop&w=1200&q=80"
+            alt="Teacher guiding students during a science experiment"
+            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            data-hero-slide
+            data-active="false"
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80"
+            alt="Students collaborating on a robotics project"
+            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            data-hero-slide
+            data-active="false"
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80"
+            alt="Young musicians performing on stage"
+            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            data-hero-slide
+            data-active="false"
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <img
+            src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80"
+            alt="Students celebrating outdoors on campus"
+            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            data-hero-slide
+            data-active="false"
+            loading="lazy"
+            aria-hidden="true"
+          />
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+        </div>
+      </div>
     </section>
     <nav id="breadcrumbs" class="mb-8" aria-label="Breadcrumb"></nav>
     <section class="rounded-3xl border border-[#A51C30]/15 bg-white px-8 py-12 shadow-sm">
