@@ -9,6 +9,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #hero-slider {
+      position: relative;
+    }
+
+    #hero-slider [data-hero-slide] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 700ms ease-in-out;
+      z-index: 0;
+    }
+
+    #hero-slider [data-hero-slide][data-active="true"] {
+      opacity: 1;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body data-depth="0" data-current-path="/" class="bg-[#F8F7F3] font-['Inter',_sans-serif] text-[#1F2933] antialiased">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-[#1A1F2B]">Skip to main content</a>
@@ -49,7 +70,7 @@
           <img
             src="images/yjis2.jpg"
             alt="GTCC logo"
-            class="absolute inset-0 h-full w-full object-cover opacity-100 transition-opacity duration-700 ease-in-out"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
             data-hero-slide
             data-active="true"
             loading="eager"
@@ -57,7 +78,7 @@
           <img
             src="images/일러스트파일 로고.jpg"
             alt="GTCC logo"
-            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
             data-hero-slide
             data-active="false"
             loading="lazy"
@@ -66,7 +87,7 @@
           <img
             src="images/21ffc3a2-45b2-4adc-a6e6-a288e1d17419.jpg"
             alt="GTCC logo"
-            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
             data-hero-slide
             data-active="false"
             loading="lazy"
@@ -75,7 +96,7 @@
           <img
             src="images/d7e6b17c-8129-4881-8d0a-8cf6ebd9018e.jpg"
             alt="GTCC logo"
-            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
             data-hero-slide
             data-active="false"
             loading="lazy"
@@ -84,7 +105,7 @@
           <img
             src="images/398abc89-4d51-4246-a3bb-5138e628e3f5.jpg"
             alt="GTCC logo"
-            class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-700 ease-in-out"
+            class="absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out"
             data-hero-slide
             data-active="false"
             loading="lazy"

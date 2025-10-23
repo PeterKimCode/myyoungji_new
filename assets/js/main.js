@@ -270,9 +270,6 @@ function initHeroSlider() {
   function setSlideVisibility() {
     slides.forEach((slide, index) => {
       const isActive = index === currentIndex;
-      slide.classList.toggle("opacity-100", isActive);
-      slide.classList.toggle("opacity-0", !isActive);
-      slide.classList.toggle("z-10", isActive);
       slide.dataset.active = isActive ? "true" : "false";
       slide.setAttribute("aria-hidden", isActive ? "false" : "true");
     });
