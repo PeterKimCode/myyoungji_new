@@ -480,6 +480,79 @@ function buildGlobalCta(base) {
   `;
 }
 
+function enhanceTranslateDropdown() {
+  const updatePlaceholder = () => {
+    const selects = document.querySelectorAll(
+      "#google_translate_element select, #google_translate_element_mobile select",
+    );
+    if (!selects.length) {
+      window.setTimeout(updatePlaceholder, 150);
+      return;
+    }
+
+    selects.forEach((select) => {
+      if (select.dataset.enhanced === "true") {
+        return;
+      }
+      select.dataset.enhanced = "true";
+      const defaultOption = select.querySelector('option[value=""]');
+      if (defaultOption) {
+        defaultOption.textContent = "언어 선택";
+      }
+    });
+  };
+
+  updatePlaceholder();
+}
+
+function initGoogleTranslateWidget() {
+  const desktopContainer = document.getElementById("google_translate_element");
+  const mobileContainer = document.getElementById("google_translate_element_mobile");
+  if (!desktopContainer && !mobileContainer) {
+    return;
+  }
+
+  const instantiate = () => {
+    const config = {
+      pageLanguage: "en",
+      includedLanguages: "en,ko,ja,zh-CN,zh-TW,fr,de,es,ru,vi,id,tl,th",
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false,
+    };
+
+    if (desktopContainer) {
+      desktopContainer.innerHTML = "";
+      // eslint-disable-next-line no-new
+      new google.translate.TranslateElement(config, "google_translate_element");
+    }
+    if (mobileContainer) {
+      mobileContainer.innerHTML = "";
+      // eslint-disable-next-line no-new
+      new google.translate.TranslateElement(config, "google_translate_element_mobile");
+    }
+
+    enhanceTranslateDropdown();
+  };
+
+  if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+    instantiate();
+    return;
+  }
+
+  window.googleTranslateElementInit = () => {
+    instantiate();
+  };
+
+  if (!document.querySelector("script[data-google-translate]")) {
+    const script = document.createElement("script");
+    script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleTranslate = "true";
+    document.head.appendChild(script);
+  }
+}
+
 const STUDENT_RECORDS = [
   {
     studentNumber: "2024-001",
@@ -659,6 +732,7 @@ async function initPage() {
   buildGlobalCta(base);
   initFooterYear();
   initMobileToggle();
+  initGoogleTranslateWidget();
   initHeroSlider();
 
   if (currentPath === "/community/search-for-student/") {
