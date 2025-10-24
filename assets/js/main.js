@@ -717,7 +717,7 @@ async function initPage() {
 
   const logoImage = logoLink ? logoLink.querySelector("img") : null;
   if (logoImage) {
-    logoImage.src = toRelative(base, "/images/gtcc_logo.jpg");
+    logoImage.src = toRelative(base, "/images/gtcc_logo.png");
   }
 
   const headerShortcut = document.getElementById("header-cta-shortcut");
