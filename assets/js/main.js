@@ -720,11 +720,6 @@ async function initPage() {
     logoImage.src = toRelative(base, "/images/gtcc_logo.png");
   }
 
-  const headerShortcut = document.getElementById("header-cta-shortcut");
-  if (headerShortcut) {
-    headerShortcut.href = toRelative(base, "/admission/");
-  }
-
   const { section, page } = findCurrentNav(currentPath);
   buildTopNavigation(base, currentPath, section);
   buildSidebar(base, section, currentPath);
