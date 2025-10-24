@@ -84,7 +84,7 @@ function findCurrentNav(path) {
   return { section: null, page: null };
 }
 
-function highlightActiveLink(link, isActive, variant = "default") {
+function highlightActiveLink(link, isActive, variant) {
   if (!link) return;
   if (isActive) {
     link.classList.add("text-[#A51C30]");
@@ -100,9 +100,6 @@ function highlightActiveLink(link, isActive, variant = "default") {
         "text-[#A51C30]",
         "shadow-sm"
       );
-    }
-    if (variant === "mobile") {
-      link.classList.add("text-[#A51C30]");
     }
   } else {
     link.classList.remove("text-[#A51C30]", "font-semibold", "border-b-[#A51C30]", "border-[#A51C30]", "bg-white", "shadow-sm");
@@ -718,6 +715,13 @@ async function initPage() {
   const logoImage = logoLink ? logoLink.querySelector("img") : null;
   if (logoImage) {
     logoImage.src = toRelative(base, "/images/gtcc_logo.png");
+  }
+
+  const headerShortcut = document.getElementById("header-cta-shortcut");
+  if (headerShortcut) {
+    headerShortcut.href = "https://www.facebook.com/myyoungjiofficialpage";
+    headerShortcut.target = "_blank";
+    headerShortcut.rel = "noopener noreferrer";
   }
 
   const { section, page } = findCurrentNav(currentPath);
