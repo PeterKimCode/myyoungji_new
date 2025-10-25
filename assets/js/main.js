@@ -671,12 +671,12 @@ async function initPage() {
   const applyFavicon = (rel) => {
     const head = document.head;
     if (!head) return;
-    const faviconUrl = `${base}images/gtcc_logo.jpg`;
+    const faviconUrl = `${base}images/gtcc_logo.png`;
     const existing = head.querySelector(`link[rel="${rel}"]`);
     const link = existing || document.createElement("link");
     link.rel = rel;
     link.href = faviconUrl;
-    link.type = "image/jpeg";
+    link.type = "image/png";
     if (!existing) {
       head.appendChild(link);
     }
