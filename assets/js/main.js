@@ -121,7 +121,7 @@ function buildTopNavigation(base, currentPath, activeSection) {
     anchor.href = relative;
     anchor.textContent = item.label;
     anchor.className =
-      "border-b-2 border-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#1F2933] transition hover:text-[#A51C30] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30]";
+      "border-b-2 border-transparent px-4 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#1F2933] transition hover:text-[#A51C30] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#A51C30] whitespace-nowrap";
     highlightActiveLink(anchor, activeSection && activeSection.path === item.path, "desktop");
     topNav.appendChild(anchor);
 
