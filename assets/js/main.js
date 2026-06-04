@@ -40,9 +40,9 @@ const NAV = [
       { label: "Director’s message", path: "/e-education/online-school/" },
       { label: "Extension YJIS", path: "/e-education/online-school-k-12/" },
       { label: "Accreditation", path: "/e-education/online-college/" },
-      { label: "Online Examination", path: "/e-education/online-examination/" },
       { label: "Extension Class Coordinator", path: "/new-page-1/" },
       { label: "Extension Class Teacher", path: "/new-page-2/" },
+      { label: "Online School(LMS)", path: "/e-education/online-School/" },
     ],
   },
   {
