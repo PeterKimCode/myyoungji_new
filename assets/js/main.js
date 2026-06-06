@@ -429,20 +429,42 @@ function initMobileToggle() {
   }
   overlay.style.zIndex = "1000";
 
+  let previousFocus = null;
+  const focusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    "input:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ].join(",");
+
+  const getFocusableItems = () =>
+    Array.from(drawer.querySelectorAll(focusableSelector)).filter((element) => {
+      const style = window.getComputedStyle(element);
+      return style.display !== "none" && style.visibility !== "hidden";
+    });
+
   const openMenu = () => {
+    if (!overlay.classList.contains("hidden")) return;
+    previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     overlay.classList.remove("hidden");
     overlay.removeAttribute("aria-hidden");
     toggle.setAttribute("aria-expanded", "true");
-    drawer.focus();
-    document.body.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden", "mobile-menu-open");
+    const focusableItems = getFocusableItems();
+    (focusableItems[0] || drawer).focus();
   };
 
-  const closeMenu = () => {
+  const closeMenu = (restoreFocus = true) => {
+    if (overlay.classList.contains("hidden")) return;
     overlay.classList.add("hidden");
     overlay.setAttribute("aria-hidden", "true");
     toggle.setAttribute("aria-expanded", "false");
-    document.body.classList.remove("overflow-hidden");
-    toggle.focus();
+    document.body.classList.remove("overflow-hidden", "mobile-menu-open");
+    if (restoreFocus) {
+      (previousFocus || toggle).focus();
+    }
   };
 
   toggle.addEventListener("click", openMenu);
@@ -457,8 +479,50 @@ function initMobileToggle() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && overlay && !overlay.classList.contains("hidden")) {
       closeMenu();
+      return;
+    }
+    if (event.key !== "Tab" || overlay.classList.contains("hidden")) {
+      return;
+    }
+
+    const focusableItems = getFocusableItems();
+    if (focusableItems.length === 0) {
+      event.preventDefault();
+      drawer.focus();
+      return;
+    }
+
+    const firstItem = focusableItems[0];
+    const lastItem = focusableItems[focusableItems.length - 1];
+    if (event.shiftKey && document.activeElement === firstItem) {
+      event.preventDefault();
+      lastItem.focus();
+    } else if (!event.shiftKey && document.activeElement === lastItem) {
+      event.preventDefault();
+      firstItem.focus();
     }
   });
+
+  drawer.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target instanceof HTMLAnchorElement) {
+      closeMenu(false);
+    }
+  });
+}
+
+function initMobileContactBar(base) {
+  if (document.querySelector(".mobile-contact-bar")) return;
+
+  const bar = document.createElement("nav");
+  bar.className = "mobile-contact-bar";
+  bar.setAttribute("aria-label", "Quick contact");
+  bar.innerHTML = `
+    <a href="tel:+63464021779">Call</a>
+    <a href="${toRelative(base, "/admission/sub2/")}">Apply</a>
+    <a href="https://www.facebook.com/myyoungjiofficialpage" target="_blank" rel="noopener noreferrer">FB</a>
+  `;
+  document.body.appendChild(bar);
 }
 
 function buildGlobalCta(base) {
@@ -736,6 +800,7 @@ async function initPage() {
   buildGlobalCta(base);
   initFooterYear();
   initMobileToggle();
+  initMobileContactBar(base);
   initGoogleTranslateWidget();
   initHeroSlider();
 
