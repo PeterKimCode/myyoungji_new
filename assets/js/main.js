@@ -424,6 +424,11 @@ function initMobileToggle() {
   const closeButton = document.getElementById("mobile-menu-close");
   if (!toggle || !overlay || !drawer || !closeButton) return;
 
+  if (overlay.parentElement !== document.body) {
+    document.body.appendChild(overlay);
+  }
+  overlay.style.zIndex = "1000";
+
   const openMenu = () => {
     overlay.classList.remove("hidden");
     overlay.removeAttribute("aria-hidden");
