@@ -31,6 +31,11 @@
         </div>
       </aside>
 
+모바일 화면에서도 줄바꿈 없이 가로로 3개가 나란히 배치되도록 크기를 좀 더 아담하게(글씨 크기와 패딩 축소) 조정했습니다.
+
+화면 너비에 상관없이 항상 일렬로 가로 배치되는 코드입니다.
+
+HTML
 <section class="space-y-10">
   <article class="relative rounded-3xl border border-slate-200/60 bg-white p-8 shadow-sm">
     <div class="space-y-6 text-base leading-relaxed text-slate-700">
@@ -42,21 +47,17 @@
       </ul>
     </div>
 
-    <!-- 국가별 링크 박스 (3개 배치) -->
-    <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <!-- 베트남 링크 -->
-        <a href="https://vietnam-url.com" class="inline-block text-center py-4 px-6 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
-            <span class="text-base font-semibold text-[#075985]">베트남 (Vietnam)</span>
+    <div class="mt-8 flex items-center gap-2 sm:gap-4">
+        <a href="https://vietnam-url.com" class="flex-1 text-center py-2 px-3 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
+            <span class="text-xs sm:text-sm font-semibold text-[#075985] whitespace-nowrap">베트남</span>
         </a>
 
-        <!-- 한국 링크 -->
-        <a href="https://korea-url.com" class="inline-block text-center py-4 px-6 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
-            <span class="text-base font-semibold text-[#075985]">한국 (Korea)</span>
+        <a href="https://korea-url.com" class="flex-1 text-center py-2 px-3 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
+            <span class="text-xs sm:text-sm font-semibold text-[#075985] whitespace-nowrap">한국</span>
         </a>
 
-        <!-- 필리핀 링크 -->
-        <a href="https://philippines-url.com" class="inline-block text-center py-4 px-6 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
-            <span class="text-base font-semibold text-[#075985]">필리핀 (Philippines)</span>
+        <a href="https://philippines-url.com" class="flex-1 text-center py-2 px-3 rounded-full bg-[#E0F2FE] hover:bg-[#BAE6FD] transition duration-200 shadow-sm">
+            <span class="text-xs sm:text-sm font-semibold text-[#075985] whitespace-nowrap">필리핀</span>
         </a>
     </div>
   </article>
