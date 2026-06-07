@@ -546,29 +546,73 @@ function buildGlobalCta(base) {
   `;
 }
 
-function enhanceTranslateDropdown() {
-  const updatePlaceholder = () => {
-    const selects = document.querySelectorAll(
-      "#google_translate_element select, #google_translate_element_mobile select",
-    );
-    if (!selects.length) {
-      window.setTimeout(updatePlaceholder, 150);
-      return;
+const LANGUAGE_OPTIONS = [
+  { value: "en", label: "English" },
+  { value: "ko", label: "Korean" },
+  { value: "ja", label: "Japanese" },
+  { value: "zh-CN", label: "Chinese" },
+  { value: "tl", label: "Filipino" },
+  { value: "vi", label: "Vietnamese" },
+  { value: "th", label: "Thai" },
+  { value: "es", label: "Spanish" },
+];
+
+function getStoredTranslateLanguage() {
+  const match = document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/);
+  if (!match) return "en";
+  const language = decodeURIComponent(match[1]).split("/").filter(Boolean).pop();
+  return LANGUAGE_OPTIONS.some((option) => option.value === language) ? language : "en";
+}
+
+function setTranslateCookie(language) {
+  const value = `/en/${language}`;
+  const hostnameParts = window.location.hostname.split(".");
+  const rootDomain = hostnameParts.length > 1 ? `.${hostnameParts.slice(-2).join(".")}` : "";
+  document.cookie = `googtrans=${value};path=/;max-age=31536000`;
+  if (rootDomain) {
+    document.cookie = `googtrans=${value};path=/;domain=${rootDomain};max-age=31536000`;
+  }
+}
+
+function syncLanguageControls(language) {
+  document.querySelectorAll("[data-translate-select]").forEach((select) => {
+    select.value = language;
+  });
+}
+
+function applyGoogleLanguage(language) {
+  setTranslateCookie(language);
+  syncLanguageControls(language);
+
+  const googleSelects = document.querySelectorAll(".goog-te-combo");
+  let applied = false;
+  googleSelects.forEach((select) => {
+    if (select.value !== language) {
+      select.value = language;
     }
+    select.dispatchEvent(new Event("change"));
+    applied = true;
+  });
 
-    selects.forEach((select) => {
-      if (select.dataset.enhanced === "true") {
-        return;
-      }
-      select.dataset.enhanced = "true";
-      const defaultOption = select.querySelector('option[value=""]');
-      if (defaultOption) {
-        defaultOption.textContent = "언어 선택";
-      }
-    });
-  };
+  if (!applied && language !== "en") {
+    window.setTimeout(() => window.location.reload(), 80);
+  }
+}
 
-  updatePlaceholder();
+function initTranslateControls() {
+  const controls = document.querySelectorAll("[data-translate-select]");
+  if (!controls.length) return;
+
+  const currentLanguage = getStoredTranslateLanguage();
+  controls.forEach((select) => {
+    if (select.dataset.ready === "true") return;
+    select.dataset.ready = "true";
+    select.innerHTML = LANGUAGE_OPTIONS.map(
+      (option) => `<option value="${option.value}">${option.label}</option>`,
+    ).join("");
+    select.value = currentLanguage;
+    select.addEventListener("change", () => applyGoogleLanguage(select.value));
+  });
 }
 
 function initGoogleTranslateWidget() {
@@ -577,11 +621,12 @@ function initGoogleTranslateWidget() {
   if (!desktopContainer && !mobileContainer) {
     return;
   }
+  initTranslateControls();
 
   const instantiate = () => {
     const config = {
       pageLanguage: "en",
-      includedLanguages: "en,ko,ja,zh-CN,zh-TW,fr,de,es,ru,vi,id,tl,th",
+      includedLanguages: LANGUAGE_OPTIONS.map((option) => option.value).join(","),
       layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
       autoDisplay: false,
     };
@@ -597,7 +642,7 @@ function initGoogleTranslateWidget() {
       new google.translate.TranslateElement(config, "google_translate_element_mobile");
     }
 
-    enhanceTranslateDropdown();
+    window.setTimeout(() => syncLanguageControls(getStoredTranslateLanguage()), 150);
   };
 
   if (window.google && window.google.translate && window.google.translate.TranslateElement) {
@@ -618,7 +663,6 @@ function initGoogleTranslateWidget() {
     document.head.appendChild(script);
   }
 }
-
 const STUDENT_RECORDS = [
   {
     studentNumber: "2024-001",

@@ -8,6 +8,7 @@
   --yj-crimson-dark: #7f1524;
   --yj-radius: 0.75rem;
   --yj-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  --yj-shadow-strong: 0 26px 70px rgba(15, 23, 42, 0.16);
 }
 
 html {
@@ -68,6 +69,87 @@ main article:hover {
   border-radius: 9999px;
 }
 
+.yj-translate-shell {
+  min-width: 9.75rem;
+}
+
+.yj-translate-control {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-height: 2.55rem;
+  align-items: center;
+  gap: 0.45rem;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.36);
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+  color: var(--yj-ink);
+}
+
+.yj-translate-control::after {
+  content: "";
+  position: absolute;
+  right: 0.95rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid rgba(31, 41, 51, 0.62);
+  border-bottom: 2px solid rgba(31, 41, 51, 0.62);
+  pointer-events: none;
+  transform: translateY(-0.15rem) rotate(45deg);
+}
+
+.yj-translate-control:focus-within {
+  border-color: rgba(165, 28, 48, 0.58);
+  box-shadow: 0 0 0 3px rgba(165, 28, 48, 0.14), 0 12px 26px rgba(15, 23, 42, 0.08);
+}
+
+.yj-translate-icon {
+  display: inline-flex;
+  width: 2.2rem;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(165, 28, 48, 0.1);
+  color: var(--yj-crimson);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.yj-translate-control select {
+  width: 100%;
+  min-height: 2.55rem;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--yj-ink);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  outline: 0;
+  padding: 0 2.05rem 0 0;
+  text-transform: uppercase;
+}
+
+.yj-translate-control--mobile {
+  min-height: 3rem;
+}
+
+.yj-google-translate-host {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
 #mobile-menu-overlay {
   position: fixed;
   inset: 0;
@@ -99,6 +181,65 @@ main article:hover {
 #global-cta > div {
   border-radius: var(--yj-radius) !important;
   background: linear-gradient(135deg, var(--yj-crimson), var(--yj-crimson-dark)) !important;
+}
+
+.yj-home-hero {
+  min-height: auto;
+  align-items: stretch !important;
+  gap: 2.5rem;
+  background:
+    radial-gradient(circle at 86% 22%, rgba(165, 28, 48, 0.16), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f6f8fb 48%, #eef3f8 100%) !important;
+  box-shadow: var(--yj-shadow-strong) !important;
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+.yj-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.yj-hero-media {
+  min-height: 320px;
+}
+
+.yj-hero-media #hero-slider {
+  min-height: clamp(300px, 34vw, 430px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.yj-hero-stats > div {
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: var(--yj-radius);
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.07);
+  padding: 0.85rem;
+}
+
+.yj-hero-stats dt {
+  color: var(--yj-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.yj-hero-stats dd {
+  margin-top: 0.25rem;
+  color: var(--yj-ink);
+  font-family: "Source Serif Pro", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.yj-home-hero + #breadcrumbs {
+  display: none;
+}
+
+.yj-home-hero ~ section {
+  position: relative;
 }
 
 .mobile-contact-bar {
@@ -161,6 +302,50 @@ main article:hover {
 
   main > section {
     padding: 2rem 1.25rem !important;
+  }
+
+  .yj-home-hero {
+    display: flex !important;
+    flex-direction: column;
+    min-height: auto;
+    gap: 1.5rem;
+    padding-top: 2rem !important;
+  }
+
+  .yj-hero-copy {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .yj-hero-media {
+    order: -1;
+    min-height: 250px;
+    width: 100%;
+  }
+
+  .yj-hero-media #hero-slider {
+    min-height: 220px;
+  }
+
+  .yj-hero-copy h1 {
+    font-size: 2.5rem !important;
+    line-height: 1.02 !important;
+  }
+
+  .yj-hero-copy > p:nth-of-type(2) {
+    display: none;
+  }
+
+  .yj-home-hero .yj-hero-stats {
+    display: none;
+  }
+
+  .yj-hero-stats > div {
+    padding: 0.7rem;
+  }
+
+  .yj-hero-stats dd {
+    font-size: 1.05rem;
   }
 
   .mobile-contact-bar {
