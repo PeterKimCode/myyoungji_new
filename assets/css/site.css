@@ -13,6 +13,7 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -73,7 +74,7 @@ main article:hover {
 
 .yj-header-main {
   display: grid !important;
-  grid-template-columns: minmax(17.5rem, 1fr) max-content max-content;
+  grid-template-columns: minmax(17.5rem, 1fr) 38rem 9.35rem;
   gap: 1.15rem;
 }
 
@@ -93,8 +94,14 @@ main article:hover {
   letter-spacing: 0.12em;
 }
 
+#top-nav {
+  width: 38rem;
+  justify-content: space-between;
+}
+
 .yj-translate-shell {
-  min-width: 8.6rem;
+  width: 9.35rem;
+  min-width: 9.35rem;
 }
 
 .yj-translate-control {
