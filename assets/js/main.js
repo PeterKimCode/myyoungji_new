@@ -63,9 +63,6 @@ const NAV = [
       { label: "Online School(LMS)", path: "/e-education/online-examination/" },
     ],
   },
-
-
-  
 ];
 
 function getBase(depth) {
