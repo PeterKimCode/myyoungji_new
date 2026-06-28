@@ -56,13 +56,6 @@ const NAV = [
       { label: "Contact Info & Search for student", path: "/community/search-for-student/" },
     ],
   },
-  {
-    label: "LMS",
-    path: "/LMS/",
-    children: [
-      { label: "Online School(LMS)", path: "/e-education/online-examination/" },
-    ],
-  },
 ];
 
 function getBase(depth) {
